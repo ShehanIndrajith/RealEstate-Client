@@ -1,4 +1,4 @@
-import PropertyDetails from '../../Pages/PropertyDetails'
+import PropertyDetails from '../../../Pages/PropertyDetails'
 
 type PropertyPageProps = {
   params: {

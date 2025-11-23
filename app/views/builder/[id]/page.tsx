@@ -1,4 +1,4 @@
-import BuilderProfile from '../../Pages/BuilderProfile'
+import BuilderProfile from '../../../Pages/BuilderProfile'
 
 type BuilderPageProps = {
   params: {

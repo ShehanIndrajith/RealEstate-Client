@@ -43,7 +43,7 @@ export const AgentCard = ({
 }: AgentCardProps) => {
   const router = useRouter()
   const handleViewProfile = () => {
-    router.push(`/agent/${id}`)
+    router.push(`/views/agent/${id}`)
   }
   if (viewMode === 'list') {
     return (

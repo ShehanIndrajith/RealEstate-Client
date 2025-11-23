@@ -1,4 +1,4 @@
-import AgentProfile from '../../Pages/AgentProfile'
+import AgentProfile from '../../../Pages/AgentProfile'
 
 type AgentPageProps = {
   params: {

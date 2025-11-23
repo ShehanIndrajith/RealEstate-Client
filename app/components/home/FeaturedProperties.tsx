@@ -34,7 +34,7 @@ export const FeaturedProperties = () => {
           ))}
         </div>
         <div className="text-center mt-12">
-          <Link href="/property-listing">
+          <Link href="/properties">
             <Button size="lg">View All Properties</Button>
           </Link>
         </div>

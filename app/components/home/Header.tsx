@@ -15,11 +15,11 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
   const navLinks = [
-    { label: 'Home', href: '#home', type: 'anchor' },
+    { label: 'Home', href: '/', type: 'anchor' },
     { label: 'Buy', href: '#buy', type: 'anchor' },
     { label: 'Rent', href: '#rent', type: 'anchor' },
-    { label: 'Builders',href:'/builders', type: 'anchor' },
-    { label: 'Agents', href: '/agents', type: 'route' },
+    { label: 'Builders',href:'/views/builders', type: 'anchor' },
+    { label: 'Agents', href: '/views/agents', type: 'route' },
     { label: 'Contact', href: '#contact', type: 'anchor' },
   ]
   return (
@@ -61,12 +61,12 @@ export const Header = () => {
           </nav>
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/login">
+            <Link href="/views/login">
               <Button variant="ghost" size="sm">
                 Login
               </Button>
             </Link>
-            <Link href="/register">
+            <Link href="/views/register">
               <Button variant="outline" size="sm">
                 Register
               </Button>

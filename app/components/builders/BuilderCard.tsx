@@ -38,7 +38,7 @@ export const BuilderCard: React.FC<BuilderCardProps> = (props) => {
   const router = useRouter()
 
   const handleViewBuilderProfile = () => {
-    router.push(`/builder/${props.builderId}`)
+    router.push(`/views/builder/${props.builderId}`)
   }
 
   const {

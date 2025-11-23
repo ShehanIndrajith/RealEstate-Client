@@ -13,13 +13,13 @@ export const ExploreLocations = () => {
     {
       name: 'Galle',
       image:
-        'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop',
+        'https://i.pinimg.com/736x/07/89/5a/07895adcbddac6fb8e51ac711c6d0f0e.jpg',
       properties: 156,
     },
     {
       name: 'Kandy',
       image:
-        'https://images.unsplash.com/photo-1588414734732-660b07b00cd3?q=80&w=2070&auto=format&fit=crop',
+        'https://i.pinimg.com/1200x/1a/6f/c3/1a6fc3dd190e2ea9704a523dab6dc082.jpg',
       properties: 98,
     },
     {

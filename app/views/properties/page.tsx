@@ -1,4 +1,4 @@
-import PropertyListing from '../Pages/PropertyListing'
+import PropertyListing from '../../Pages/PropertyListing'
 
 export default function PropertyListingPage() {
   return <PropertyListing />
