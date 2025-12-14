@@ -24,18 +24,44 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [role, setRole] = useState<UserRole>(null)
   const [profileImage, setProfileImage] = useState<File | null>(null)
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle registration logic here
-    console.log('Registration attempt:', {
-      name,
-      email,
-      phone,
-      password,
-      role,
-      profileImage,
-    })
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("FullName", name);
+  formData.append("Email", email);
+  formData.append("Password", password);
+  formData.append("Role", role ?? "");
+  formData.append("PhoneNumber", phone);
+
+  if (profileImage) {
+    formData.append("ProfileImage", profileImage); // MUST match backend DTO property
   }
+
+  try {
+    const res = await fetch("https://localhost:5001/api/users/register", {
+      method: "POST",
+      body: formData, // ❗ No headers. Browser will set correct boundaries automatically.
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      console.error("Registration failed:", err);
+      alert("Registration failed: " + (err.error ?? "Unknown error"));
+      return;
+    }
+
+    const data = await res.json();
+    console.log("User registered successfully:", data);
+
+    alert("Registration successful");
+    window.location.href = "/views/login";
+
+  } catch (error) {
+    console.error("Network/server error:", error);
+    alert("Server Error: " + error);
+  }
+};
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setProfileImage(e.target.files[0])
@@ -55,8 +81,8 @@ const Register = () => {
           <div className="grid grid-cols-2 gap-4">
             <Card
               selectable
-              selected={role === 'agent'}
-              onClick={() => setRole('agent')}
+              selected={role === 'Agent'}
+              onClick={() => setRole('Agent')}
               className="flex flex-col items-center py-4"
             >
               <div className="bg-blue-100 p-3 rounded-full mb-3">
@@ -69,8 +95,8 @@ const Register = () => {
             </Card>
             <Card
               selectable
-              selected={role === 'builder'}
-              onClick={() => setRole('builder')}
+              selected={role === 'Builder'}
+              onClick={() => setRole('Builder')}
               className="flex flex-col items-center py-4"
             >
               <div className="bg-blue-100 p-3 rounded-full mb-3">

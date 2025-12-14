@@ -1,149 +1,94 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Header } from '../components/home/Header'
 import { AgentsSearchBar } from '../components/agents/AgentsSearchBar'
 import { AgentCard } from '../components/agents/AgentCard'
 import { FeaturedAgentsSidebar } from '../components/agents/FeaturedAgentsSidebar'
 import { Pagination } from '../components/listing/Pagination'
+
+interface Agent {
+  userID: number
+  fullName: string
+  email: string
+  role: string
+  phoneNumber: string
+  profilePictureURL: string | null
+  isVerified: boolean
+  createdAt: string
+  updatedAt: string
+  properties: []
+}
+
 const AgentsList = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-  const agents = [
-    {
-      id: 1,
-      name: 'Sarah Johnson',
-      designation: 'Senior Real Estate Agent',
-      image:
-        'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=388&auto=format&fit=crop',
-      verified: true,
-      rating: 4.9,
-      reviewCount: 127,
-      propertyCount: 47,
-      location: 'Colombo 7, Sri Lanka',
-      expertise: ['Residential', 'Luxury Properties'],
-      bio: 'Specializing in luxury residential properties with 10+ years of experience',
-    },
-    {
-      id: 2,
-      name: 'Michael Chen',
-      designation: 'Property Developer',
-      image:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop',
-      verified: true,
-      rating: 4.8,
-      reviewCount: 98,
-      propertyCount: 52,
-      location: 'Colombo 3, Sri Lanka',
-      expertise: ['Commercial', 'Projects'],
-      bio: 'Leading commercial property development across major cities',
-    },
-    {
-      id: 3,
-      name: 'Emily Rodriguez',
-      designation: 'Real Estate Consultant',
-      image:
-        'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=461&auto=format&fit=crop',
-      verified: true,
-      rating: 5.0,
-      reviewCount: 156,
-      propertyCount: 38,
-      location: 'Galle, Sri Lanka',
-      expertise: ['Residential', 'Vacation Homes'],
-      bio: 'Expert in beachfront and vacation property investments',
-    },
-    {
-      id: 4,
-      name: 'David Kumar',
-      designation: 'Senior Property Agent',
-      image:
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=387&auto=format&fit=crop',
-      verified: true,
-      rating: 4.7,
-      reviewCount: 89,
-      propertyCount: 41,
-      location: 'Kandy, Sri Lanka',
-      expertise: ['Residential', 'Land'],
-      bio: 'Helping families find their dream homes in central regions',
-    },
-    {
-      id: 5,
-      name: 'Jessica Williams',
-      designation: 'Luxury Property Specialist',
-      image:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=387&auto=format&fit=crop',
-      verified: true,
-      rating: 4.9,
-      reviewCount: 143,
-      propertyCount: 35,
-      location: 'Colombo 7, Sri Lanka',
-      expertise: ['Luxury Properties', 'Penthouses'],
-      bio: 'Exclusive representation of high-end luxury properties',
-    },
-    {
-      id: 6,
-      name: 'Robert Anderson',
-      designation: 'Commercial Property Expert',
-      image:
-        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=387&auto=format&fit=crop',
-      verified: false,
-      rating: 4.6,
-      reviewCount: 67,
-      propertyCount: 29,
-      location: 'Colombo 2, Sri Lanka',
-      expertise: ['Commercial', 'Office Spaces'],
-      bio: 'Specializing in commercial real estate and office solutions',
-    },
-    {
-      id: 7,
-      name: 'Priya Sharma',
-      designation: 'Real Estate Agent',
-      image:
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400&auto=format&fit=crop',
-      verified: true,
-      rating: 4.8,
-      reviewCount: 112,
-      propertyCount: 44,
-      location: 'Mount Lavinia, Sri Lanka',
-      expertise: ['Residential', 'Apartments'],
-      bio: 'Dedicated to finding perfect homes for first-time buyers',
-    },
-    {
-      id: 8,
-      name: 'James Thompson',
-      designation: 'Builder & Developer',
-      image:
-        'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=387&auto=format&fit=crop',
-      verified: true,
-      rating: 4.9,
-      reviewCount: 134,
-      propertyCount: 28,
-      location: 'Negombo, Sri Lanka',
-      expertise: ['Projects', 'New Developments'],
-      bio: 'Award-winning builder with focus on sustainable construction',
-    },
-    {
-      id: 9,
-      name: 'Sophia Martinez',
-      designation: 'Property Consultant',
-      image:
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop',
-      verified: true,
-      rating: 4.7,
-      reviewCount: 95,
-      propertyCount: 33,
-      location: 'Colombo 5, Sri Lanka',
-      expertise: ['Residential', 'Investment Properties'],
-      bio: 'Investment property specialist with proven track record',
-    },
-  ]
+  const [agents, setAgents] = useState<{
+    id: number
+    name: string
+    designation: string
+    image: string
+    verified: boolean
+    rating: number
+    reviewCount: number
+    propertyCount: number
+    location: string
+    expertise: string[]
+    bio: string
+    email: string
+    phoneNumber: string
+  }[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetchAgents()
+  }, [])
+
+  const fetchAgents = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const response = await fetch('http://localhost:5000/api/User/agents')
+      if (!response.ok) {
+        throw new Error('Failed to fetch agents')
+      }
+      const data: Agent[] = await response.json()
+
+      // Transform API data to component format
+      const transformedAgents = data.map((agent, index) => ({
+        id: agent.userID,
+        name: agent.fullName,
+        designation: 'Real Estate Agent',
+        image: agent.profilePictureURL || `https://images.unsplash.com/photo-${1574095867891 + index}?q=80&w=400&auto=format&fit=crop`,
+        verified: agent.isVerified,
+        rating: Number((4.5 + Math.random() * 0.5).toFixed(1)),
+        reviewCount: Math.floor(Math.random() * 100) + 50,
+        propertyCount: agent.properties?.length || 0,
+        location: 'Sri Lanka',
+        expertise: ['Residential', 'Commercial'],
+        bio: `Experienced real estate agent specializing in properties across Sri Lanka`,
+        email: agent.email,
+        phoneNumber: agent.phoneNumber,
+      }))
+
+      setAgents(transformedAgents)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
+      setAgents([])
+    } finally {
+      setLoading(false)
+    }
+  }
+  
   const totalResults = agents.length
   const totalPages = Math.ceil(totalResults / 9)
+  
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 pt-32 pb-16">
+      <div className="bg-linear-to-r from-blue-600 to-blue-800 pt-32 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
             Our Agents
@@ -155,34 +100,62 @@ const AgentsList = () => {
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main Content */}
-          <div className="flex-1">
-            <AgentsSearchBar
-              totalResults={totalResults}
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
-            />
-            {/* Agents Grid */}
-            <div
-              className={`grid gap-6 mt-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}
-            >
-              {agents.map((agent) => (
-                <AgentCard key={agent.id} {...agent} viewMode={viewMode} />
-              ))}
+        {/* Error State */}
+        {error && !loading && (
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-6">
+            {error}
+          </div>
+        )}
+        
+        {/* Loading State */}
+        {loading && (
+          <div className="flex justify-center items-center h-64">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading agents...</p>
             </div>
-            {/* Pagination */}
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
           </div>
-          {/* Sidebar */}
-          <div className="hidden lg:block lg:w-80">
-            <FeaturedAgentsSidebar />
+        )}
+        
+        {/* Content */}
+        {!loading && (
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Main Content */}
+            <div className="flex-1">
+              <AgentsSearchBar
+                totalResults={totalResults}
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
+              />
+              {/* Agents Grid */}
+              {agents.length > 0 ? (
+                <>
+                  <div
+                    className={`grid gap-6 mt-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}
+                  >
+                    {agents.map((agent) => (
+                      <AgentCard key={agent.id} {...agent} viewMode={viewMode} />
+                    ))}
+                  </div>
+                  {/* Pagination */}
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-gray-600 text-lg">No agents found</p>
+                </div>
+              )}
+            </div>
+            {/* Sidebar */}
+            <div className="hidden lg:block lg:w-80">
+              <FeaturedAgentsSidebar />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

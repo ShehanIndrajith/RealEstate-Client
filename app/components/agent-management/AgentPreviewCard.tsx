@@ -9,6 +9,7 @@ import {
   PhoneIcon,
   MailIcon,
 } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import React from "react";
 
 interface AgentPreviewCardProps {
@@ -16,12 +17,13 @@ interface AgentPreviewCardProps {
     name?: string;
     email?: string;
     phone?: string;
+    whatsapp?: string;
     bio?: string;
     location?: string;
     experience?: string;
     specializations?: string[];
     rating?: number;
-    verified?: boolean;
+    isVerified?: boolean;
     profilePhoto?: string;
     featuredProperties?: string[];
   };
@@ -32,12 +34,13 @@ export const AgentPreviewCard = ({ data }: AgentPreviewCardProps) => {
     name,
     email,
     phone,
+    whatsapp,
     bio,
     location,
     experience,
     specializations = [],
     rating = 0,
-    verified = false,
+    isVerified = false,
     profilePhoto,
     featuredProperties = [],
   } = data;
@@ -64,7 +67,7 @@ export const AgentPreviewCard = ({ data }: AgentPreviewCardProps) => {
             <div className="w-24 h-24 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 border-4 border-blue-50" />
           )}
 
-          {verified && (
+          {isVerified && (
             <div className="absolute -bottom-1 -right-1 bg-blue-600 rounded-full p-1.5 shadow-lg">
               <CheckCircleIcon size={16} className="text-white" />
             </div>
@@ -129,7 +132,7 @@ export const AgentPreviewCard = ({ data }: AgentPreviewCardProps) => {
       </div>
 
       {/* Contact Info */}
-      {(email || phone) && (
+      {(email || phone || whatsapp) && (
         <div className="p-6 bg-gray-50 space-y-3">
           {email && (
             <div className="flex items-center gap-3 text-sm">
@@ -146,6 +149,14 @@ export const AgentPreviewCard = ({ data }: AgentPreviewCardProps) => {
                 <PhoneIcon size={16} className="text-green-600" />
               </div>
               <span className="text-gray-700">{phone}</span>
+            </div>
+          )}
+          {whatsapp && (
+            <div className="flex items-center gap-3 text-sm">
+              <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                <FaWhatsapp size={16} className="text-green-600" />
+              </div>
+              <span className="text-gray-700">{whatsapp}</span>
             </div>
           )}
         </div>
