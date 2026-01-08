@@ -74,7 +74,7 @@ export const LoggedInHeader = () => {
 
   const userMenuItems = [
     { icon: <LayoutDashboardIcon size={18} />, label: 'Dashboard', href: '/dashboard' },
-    { icon: <UserIcon size={18} />, label: 'My Profile', href: '/views/me/profile' },
+    { icon: <UserIcon size={18} />, label: 'My Profile', href: '/views/me/editprofile' },
     { icon: <HeartIcon size={18} />, label: 'Saved Properties', href: '/saved' },
     { icon: <SettingsIcon size={18} />, label: 'Settings', href: '/settings' },
   ]

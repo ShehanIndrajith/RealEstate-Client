@@ -20,7 +20,7 @@ interface AgentPreviewCardProps {
     whatsapp?: string;
     bio?: string;
     location?: string;
-    experience?: string;
+    experience?: string | number;
     specializations?: string[];
     rating?: number;
     isVerified?: boolean;

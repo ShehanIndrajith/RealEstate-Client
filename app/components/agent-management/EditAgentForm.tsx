@@ -32,7 +32,6 @@ export interface AgentData {
   experience: number
   rating: number
   specializations: string[]
-  featuredProperties: string[]
   isVerified: boolean
 }
 

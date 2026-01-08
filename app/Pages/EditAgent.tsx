@@ -18,12 +18,11 @@ export interface AgentFormData {
   whatsapp: string
   bio: string
   location: string
-  experience: string | number
+  experience: number
   specializations: string[]
   rating: number
   isVerified: boolean
   profilePhoto: string
-  featuredProperties: string[]
 }
 
 const EditAgentPage = () => {
@@ -40,19 +39,18 @@ const EditAgentPage = () => {
     whatsapp: "",
     bio: "",
     location: "",
-    experience: "",
+    experience: 0,
     specializations: [],
     rating: 0,
     isVerified: false,
     profilePhoto: "",
-    featuredProperties: [],
   })
 
   useEffect(() => {
     const token = sessionStorage.getItem("token")
 
     if (!token) {
-      router.replace("/login")
+      router.replace("/views/login")
       return
     }
 
@@ -70,7 +68,7 @@ const EditAgentPage = () => {
 
         if (res.status === 401) {
           sessionStorage.clear()
-          router.replace("/login")
+          router.replace("/views/login")
           return
         }
 
@@ -79,7 +77,7 @@ const EditAgentPage = () => {
         }
 
         const data = await res.json()
-
+console.log("Fetched agent data:", data)
         setPreviewData({
           agentId: data.userID.toString(),
           name: data.fullName,
@@ -88,13 +86,12 @@ const EditAgentPage = () => {
           whatsapp: data.whatsAppNumber ?? "",
           bio: data.agent?.bio ?? "",
           location: data.agent?.location ?? "",
-          experience: data.agent?.experienceYears ?? "",
+          experience: Number(data.agent?.experienceYears ?? 0),
           specializations:
             data.agent?.expertise?.map((e: any) => e.name) ?? [],
           rating: data.agent?.stats?.avgRating ?? 0,
-          isVerified: true,
+          isVerified: data.agent?.isVerified ?? false,
           profilePhoto: data.profilePictureURL,
-          featuredProperties: [],
         })
       } catch (err) {
         console.error(err)

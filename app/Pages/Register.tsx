@@ -15,7 +15,7 @@ import {
   UploadIcon,
 } from 'lucide-react'
 import Image from 'next/image'
-type UserRole = 'agent' | 'builder' | null
+type UserRole = 'Agent' | 'Builder' | null
 const Register = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')

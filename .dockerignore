@@ -1,0 +1,30 @@
+# dependencies
+node_modules
+
+# Next.js build output
+.next
+out
+
+# local env files
+.env
+.env.local
+.env.*
+
+# Misc
+.DS_Store
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnp.*
+.vscode
+.idea
+
+# Git
+.git
+
+# Docker
+Dockerfile
+docker-compose*.yml
+
+# coverage
+coverage
