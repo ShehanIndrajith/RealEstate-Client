@@ -88,7 +88,7 @@ console.log("Fetched agent data:", data)
           location: data.agent?.location ?? "",
           experience: Number(data.agent?.experienceYears ?? 0),
           specializations:
-            data.agent?.expertise?.map((e: any) => e.name) ?? [],
+            data.agent?.expertise?.map((e: { name?: string }) => e.name ?? '') ?? [],
           rating: data.agent?.stats?.avgRating ?? 0,
           isVerified: data.agent?.isVerified ?? false,
           profilePhoto: data.profilePictureURL,

@@ -51,7 +51,7 @@ export const EditAgentForm: React.FC<EditAgentFormProps> = ({
   const [newSpecialization, setNewSpecialization] = useState<string>('')
   const [modifiedFields, setModifiedFields] = useState<Set<string>>(new Set())
 
-  const handleInputChange = (field: keyof AgentData, value: any) => {
+  const handleInputChange = (field: keyof AgentData, value: AgentData[keyof AgentData]) => {
     onDataChange({
       ...previewData,
       [field]: value,
@@ -348,7 +348,7 @@ export const EditAgentForm: React.FC<EditAgentFormProps> = ({
                   handleInputChange(
                     'featuredProperties',
                     previewData.featuredProperties.filter(
-                      (_: any, i: number) => i !== index,
+                      (_: string, i: number) => i !== index,
                     ),
                   )
                 }}

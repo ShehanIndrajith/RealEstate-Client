@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Header } from '../components/home/Header'
 import { LoggedInHeader } from '../components/home/LoggedInHeader'
 import { Hero } from '../components/home/Hero'
@@ -12,13 +12,10 @@ import { CTASection } from '../components/home/CTASection'
 import { Footer } from '../components/home/Footer'
 
 const Home = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    // Check if token exists in sessionStorage
-    const token = sessionStorage.getItem('token')
-    setIsLoggedIn(!!token)
-  }, [])
+  const [isLoggedIn] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false
+    return !!sessionStorage.getItem('token')
+  })
 
   return (
     <div className="min-h-screen bg-white">

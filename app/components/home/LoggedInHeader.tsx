@@ -17,12 +17,18 @@ import {
 } from 'lucide-react'
 import { Button } from '../ui/Button'
 
+type User = {
+  fullName?: string
+  email?: string
+  profilePictureURL?: string
+}
+
 export const LoggedInHeader = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const [notificationCount, setNotificationCount] = useState(3)
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const router = useRouter()
 
   const handleLogout = () => {
